@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="YDS Jimmy">
+
+
+
+
+
+
+
+<title>浏览器安全 之 XSS攻击 | Jimmy&#39;s Daily Space!</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+</style>
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/frame.js"></script>
+    
+
+
+
+
+
+
+
+
+
+
+  <meta name="generator" content="Hexo 6.2.0"></head>
+  <body>
+    <div class="mask-border">
+    </div>
+
+    <div class="wrapper">
+
+      <div class="header">
+  <div class="flex-container">
+    <div class="header-inner">
+      <div class="site-brand-container">
+        <a href="/">
+          
+            JimmyDaily.几米的小站
+          
+        </a>
+      </div>
+      <div id="menu-btn" class="menu-btn" onclick="toggleMenu()">
+        Menu
+      </div>
+      <nav class="site-nav">
+        <ul class="menu-list">
+          
+            
+              <li class="menu-item">
+                <a href="/">Home</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/archives/">Archive</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/categories/gallery/">Gallery</a>
+              </li> 
+                   
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main">
+        <div class="flex-container">
+          <article id="post">
+
+  
+    <div class="post-head">
+    <div class="post-info">
+        <div class="tag-list">
+            
+                
+                    <span class="post-tag">
+                        <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9B%B8%E5%85%B3-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%89%E5%85%A8/">
+                            浏览器相关 / 浏览器安全
+                        </a>
+                    </span>    
+                           
+            
+        </div>
+        <div class="post-title">
+            
+            
+                浏览器安全 之 XSS攻击
+            
+            
+        </div>
+        <span class="post-date">
+            Sep 19, 2022
+        </span>
+    </div>
+    <div class="post-img">
+        
+            <img src="http://5b0988e595225.cdn.sohucs.com/images/20191204/c5781ac42b254390b101365ff4c4ad71.jpeg" alt="featured_image">
+              
+    </div>
+</div>
+    <div class="post-content">
+    <p>浏览器的安全问题主要从2个攻击讲起～先说XSS攻击<br>分别是：1.XSS攻击 2.CSRF攻击</p>
+<hr>
+<p><em><strong>是什么？</strong></em><br>    &gt;XSS 全称是 Cross Site Scripting(即跨站脚本)，为了和 CSS 区分，故叫它XSS。XSS 攻击是指浏览器中执行恶意脚本(无论是跨域还是同域)，从而拿到用户的信息并进行操作。</p>
+<p>  常见的通过XSS攻击可实现的行为:</p>
+<pre><code>1.窃取Cookie。监听用户行为，比如输入账号密码后直接发送到黑客服务器。
+
+2.修改 DOM 伪造登录表单。
+
+3.在页面中生成浮窗广告。
+</code></pre>
+<p><em><strong>有什么？</strong></em></p>
+<blockquote>
+<p>通常情况，XSS 攻击的实现有三种方式——存储型、反射型和文档型。</p>
+</blockquote>
+<ul>
+<li><p>存储型<br> 顾名思义就是将恶意脚本存储了起来，存储型的 XSS 将脚本存储到了服务端的数据库，然后在客户端执行这些脚本，从而达到攻击的效果。</p>
+<p> 常见的场景是留言评论区提交一段脚本代码，如果前后端没有做好转义的工作，那评论内容存到了数据库，在页面渲染过程中直接执行, 相当于执行一段未知逻辑的 JS 代码，是非常恐怖的。这就是存储型的 XSS 攻击。</p>
+</li>
+<li><p>反射型<br> 即恶意脚本作为网络请求的一部分。比如输入：<br> <code>http://jimmy-daily.space?q=&lt;script&gt;alert(&quot;你被攻击啦&quot;)&lt;/script&gt;</code><br> 这样，在服务器端会拿到q参数,然后将内容返回给浏览器端，浏览器将这些内容作为HTML的一部分解析，发现是一个脚本，直接执行，这样就被攻击了。</p>
+<p> 之所以叫它反射型, 是因为恶意脚本是通过作为网络请求的参数，经过服务器，然后再反射到HTML文档中，执行解析。和存储型不一样的是，服务器并不会存储这些恶意脚本。</p>
+</li>
+<li><p>文档型<br> 文档型的 XSS 攻击并不会经过服务端，而是作为中间人的角色，在数据传输过程劫持到网络数据包，然后修改里面的 html 文档！</p>
+<p> 这样的劫持方式包括WIFI路由器劫持或者本地恶意软件等。</p>
+</li>
+</ul>
+<p><em><strong>怎么办？</strong></em></p>
+<blockquote>
+<p>3种攻击的一个共同点是：都是让恶意脚本直接能在浏览器中执行。所以只要避免脚本代码的执行就可以防范它！</p>
+</blockquote>
+<p>  1 .不信任任何用户输入</p>
+<pre><code>无论是前端还是服务端都要对用户的输入进行转码或过滤如：
+```&lt;script&gt;alert(&quot;你被攻击啦&quot;)&lt;/script&gt;```
+转码后变为：
+```&amp;lt;script&amp;gt;alert(&amp;#39;你完蛋了&amp;#39;)&amp;lt;/script&amp;gt;```
+</code></pre>
+<blockquote>
+<p>这样的代码在 html 解析的过程中是无法执行的。<br>  当然也可以利用关键词过滤的方式，将 script 标签给删除。</p>
+</blockquote>
+<p>  2 .利用CSP和HttpOnly</p>
+<blockquote>
+<p>CSP，即浏览器中的内容安全策略，它的核心思想就是服务器决定浏览器加载哪些资源，具体来说可以完成以下功能:</p>
+</blockquote>
+<ul>
+<li>限制其他域下的资源加载。</li>
+<li>禁止向其它域提交数据。</li>
+<li>提供上报机制，能帮助我们及时发现 XSS 攻击。</li>
+</ul>
+<blockquote>
+<p>HttpOnly是Cookie的一个属性（具体信息放在浏览器缓存中Cookie属性的部分）设置了Cookie 的 HttpOnly 属性后，JavaScript 便无法读取 Cookie 的值。这样也能很好的防范 XSS 攻击。</p>
+</blockquote>
+<font color='#000066'>
+总结XSS攻击：
+XSS 攻击是指浏览器中执行恶意脚本, 然后拿到用户的信息进行操作。主要分为存储型、反射型和文档型。
+防范的措施包括:
+不要相信用户的输入，对输入内容转码或者过滤，让其不可执行。 利用 CSP，利用 Cookie 的 HttpOnly 属性。</font>
+</div> 
+
+<script>
+    window.onload = detectors();
+</script>
+    <div class="post-footer">
+    <div class="h-line-primary"></div>
+    <nav class="post-nav">
+        <div class="prev-item">
+           
+                <div class="icon arrow-left"></div>
+                <div class="post-link">
+                    <a href="/2022/09/20/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">Prev</a>
+                </div>
+            
+        </div>
+        <div class="next-item">
+            
+                <div class="icon arrow-right"></div>
+                <div class="post-link">
+                  <a href="/2022/06/29/tplink%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95%EF%BC%9A%E4%B8%80%E9%9D%A2%E3%80%81%E4%BA%8C%E9%9D%A2/">Next</a>  
+                </div>  
+            
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="post-comment">
+
+     
+
+     
+    
+    
+
+</div>
+     
+  
+</article>
+        </div>
+      </div>
+      
+      <div class="footer">
+    <div class="flex-container">
+        <div class="footer-text">
+            
+            
+            
+                Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/zoeingwingkei/frame/">Frame</a>
+                
+        </div>
+    </div>
+</div>
+
+    </div>
+
+  </body>
+</html>
