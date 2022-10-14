@@ -129,12 +129,42 @@
     </div>
     <div class="post-img">
         
-            <img src="https://img3.doubanio.com/view/thing_review/l/public/p2847153.jpg" alt="featured_image">
+            <img src="https://pic1.zhimg.com/v2-356e7e0b726be78a7b999539a3f15e1e_1200x500.jpg" alt="featured_image">
               
     </div>
 </div>
     <div class="post-content">
-    
+    <blockquote>
+<h2 id="this的指向？"><a href="#this的指向？" class="headerlink" title="this的指向？"></a>this的指向？</h2></blockquote>
+<ul>
+<li><p>普通函数中的this</p>
+<pre><code> 谁调用了函数或者方法就指向谁。
+</code></pre>
+</li>
+<li><p>匿名函数中的this</p>
+<pre><code> 匿名函数的执行具有全局性，则匿名函数中的this指向是window，而非调用该函数的对象。
+</code></pre>
+</li>
+<li><p>箭头函数中的this</p>
+<pre><code> 1.箭头函数中的this是在定义的时候就确定下来的，不是在调用的时候才确定。
+ 2.this指向父级作用域的执行上下文（技巧：js中除了全局作用域，其他都是由函数创造出来的，找到离箭头函数最近的function，与该function平级的执行上下文中的this即是箭头函数中的this）
+ 3.箭头函数无法使用apply、call、bind方法改变this指向，因为其this值在函数定义时已经确定
+</code></pre>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let obj = &#123;</span><br><span class="line">    //此处的this就是箭头函数中的this</span><br><span class="line">    getThis: function ()&#123;</span><br><span class="line">        return ()=&gt;&#123;</span><br><span class="line">            console.log(this);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.getThis()(); //obj</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<h2 id="如何改变this的指向？"><a href="#如何改变this的指向？" class="headerlink" title="如何改变this的指向？"></a>如何改变this的指向？</h2></blockquote>
+<ul>
+<li><p>apply</p>
+<pre><code> apply()方法简单理解成调用一个函数的方式，且可以改变函数的this指向。
+</code></pre>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">写法：fun.apply(thisArg,[argsArray])</span><br><span class="line">thisArg:在fun函数运行时指定的this的值</span><br><span class="line">argsArray:传递的值，必须包含在数组里面</span><br><span class="line">返回值就是函数的返回值，apply就是调用函数</span><br><span class="line">const arr = [1,22,3,44,5,66,7,88,9];</span><br><span class="line">const max = Math.max.apply(Math,arr);</span><br><span class="line">console.log(max);</span><br></pre></td></tr></table></figure></li>
+<li><p>call</p>
+</li>
+<li><p>bind</p>
+</li>
+</ul>
+
 </div> 
 
 <script>
