@@ -135,15 +135,77 @@
 </div>
     <div class="post-content">
     <blockquote>
-<p>Promise</p>
-</blockquote>
-<pre><code>Promise是异步编程的一种方式，比传统解决方案（回调函数和事件）更加合理强大，打比方说，Promise好比容器存放一些未来才会执行完毕（异步）的事件的结果，而这些结果一旦生成是无法改变的。
-</code></pre>
+<h2 id="什么是同步和异步？"><a href="#什么是同步和异步？" class="headerlink" title="什么是同步和异步？"></a>什么是同步和异步？</h2></blockquote>
+<ul>
+<li><h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a><code>同步</code></h3><ul>
+<li>指在主线程上排队执行的任务，只有前一个执行完，才能执行下一个。</li>
+<li>也就是调用一旦开始，就必须等待调用返回了结果才能往后执行。</li>
+<li>程序的执行顺序和任务的排列顺序一致。</li>
+</ul>
+</li>
+<li><h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a><code>异步</code></h3><ul>
+<li>异步任务不进入主线程，而进入任务队列，当任务队列通知主线程，某个异步任务可以执行了，该任务才会进入到主线程。</li>
+<li>每一个任务有一个或者多个回调函数。前一个任务结束后，前一个任务执行完后，执行回调函数，而后一个任务在前一个任务没有执行结束的时候就已经开始执行。</li>
+<li>程序的执行顺序和任务的排列顺序不一致，是异步的。</li>
+<li>我们常用的setTimeout和setLnterval函数，Ajax都是异步操作。</li>
+</ul>
+</li>
+<li><h3 id="实现异步的方法"><a href="#实现异步的方法" class="headerlink" title="实现异步的方法"></a><code>实现异步的方法</code></h3><ul>
+<li>回调函数callback</li>
+</ul>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ajax(url,()=&gt;&#123;</span><br><span class="line">    //处理逻辑</span><br><span class="line">&#125;)</span><br><span class="line">//回调地狱Callback hell，假设多个请求存在依赖性</span><br><span class="line">ajax(url,()=&gt;&#123;</span><br><span class="line">    //处理逻辑</span><br><span class="line">    ajax(url1,()=&gt;&#123;</span><br><span class="line">        //处理逻辑1</span><br><span class="line">        ajax(url2,()=&gt;&#123;</span><br><span class="line">            //处理逻辑2</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">//回调函数不能使用try catch 捕获错误，不能直接return。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>事件监听</li>
+</ul>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//在这种情况下，异步任务的执行不取决于代码的执行顺序而取决于某个事件是否发生。以下采用jquery写法。</span><br><span class="line"></span><br><span class="line">f1.on(&quot;done&quot;,f2); </span><br><span class="line"></span><br><span class="line">//当f1发生done事件，就执行f2</span><br><span class="line"></span><br><span class="line">function f1()&#123;</span><br><span class="line">    setTimeout(function()&#123;</span><br><span class="line">        //处理逻辑</span><br><span class="line">        f1.trigger(&quot;done&quot;)</span><br><span class="line">    &#125;,1000)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//整个程序编程事件驱动型，运行流程不清晰，阅读代码难以看出主流程。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>发布订阅</li>
+</ul>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//假定存在信号中心，某个任务完成的时候，向信号中心发布（publish）一个信号，其他任务可以向信号中心“订阅”这个信号，从而知道自己什么时候可以开始执行。</span><br><span class="line">//这就是发布订阅模式（publish-subscribe pattern）又称观察者模式（observer pattern）</span><br><span class="line"></span><br><span class="line">jQuery.subscribe(&#x27;done&#x27;,f2);</span><br><span class="line"></span><br><span class="line">function f1()&#123;</span><br><span class="line">    setTimeout(function ()&#123;</span><br><span class="line">        //处理逻辑</span><br><span class="line">        jQuery.publish(&#x27;done&#x27;);</span><br><span class="line">    &#125;,1000);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">jQuery.unsubscribe(&#x27;done&#x27;,f2);</span><br><span class="line">//该方法类似事件监听但优势在于可以查订阅中心得知存在多少信号、每个信号有多少订阅者，从而监控程序的运行。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Promise&#x2F;A+</li>
+<li>生成器Generators&#x2F;yield</li>
+<li>async&#x2F;await</li>
+</ul>
+<p>JS异步编程的进化史：callback &gt; promise &gt; generator &gt; async await</p>
+</li>
+</ul>
 <blockquote>
-<p>async await</p>
-</blockquote>
-<pre><code>async await也是异步编程的一种解决方案，使用ES6中Generator函数的语法糖，他有内置执行器，不需要额外的调用直接会自动执行并输出结果，返回一个Promise对象
-</code></pre>
+<h2 id="有哪些常用异步方式？"><a href="#有哪些常用异步方式？" class="headerlink" title="有哪些常用异步方式？"></a>有哪些常用异步方式？</h2></blockquote>
+<ul>
+<li><h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a><code>Promise</code></h3><ul>
+<li>Promise是异步编程的一种方式，比传统解决方案（回调函数和事件）更加合理强大，打比方说，Promise好比容器存放一些未来才会执行完毕（异步）的事件的结果，而这些结果一旦生成是无法改变的。</li>
+<li>Promise的三种状态：<ul>
+<li>Pending—Promise对象实例创建时候的初始状态。</li>
+<li>Fulfilled—可以理解为成功的状态。</li>
+<li>Rejected—可以理解为失败的状态。<br>  <img src="https://uploadfiles.nowcoder.com/images/20220301/4107856_1646121826353/AE8F5B0E5132A5E6C19BCE0A3065045C" alt="Promise状态关系"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><h3 id="async-await"><a href="#async-await" class="headerlink" title="async await"></a><code>async await</code></h3><ul>
+<li>async await也是异步编程的一种解决方案，使用ES6中Generator函数的语法糖，他有内置执行器，不需要额外的调用直接会自动执行并输出结果，返回一个Promise对象(就是将Generator函数和自动执行器，包装在一个函数里)</li>
+</ul>
+</li>
+<li><h3 id="Promise-和-async-await-的区别"><a href="#Promise-和-async-await-的区别" class="headerlink" title="Promise 和 async await 的区别"></a><code>Promise 和 async await 的区别</code></h3><ol>
+<li><p>Promise解决了传统callback函数导致的地狱回调问题，但它会形成回调链，复杂场景不美观。而async await使异步代码看起来像同步代码，await的本质是可以提供等同于“同步效果”的等待异步返回能力的语法糖，只有这一句执行完，才会执行下一句。</p>
+</li>
+<li><p>async await 和 Promise一样，是非阻塞的。</p>
+</li>
+<li><p>async await是基于Promise实现的，可以说是改良版的Promise，它不能用于普通的回调函数。</p>
+</li>
+<li><p>async await相对于Promise而言的优势：</p>
+<ul>
+<li>处理then的调用链，能够更清晰准确的写出代码</li>
+<li>并且也能优雅的解决回调地狱的 wt</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
 
 </div> 
 
