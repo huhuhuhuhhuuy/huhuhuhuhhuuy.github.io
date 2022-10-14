@@ -134,7 +134,32 @@
     </div>
 </div>
     <div class="post-content">
-    
+    <p>  谈到前端缓存主要就是在讲浏览器的缓存，首先先来讲解浏览器的两个缓存机制：</p>
+<ul>
+<li>强缓存</li>
+<li>协商缓存</li>
+</ul>
+<blockquote>
+<h2 id="强缓存"><a href="#强缓存" class="headerlink" title="强缓存"></a>强缓存</h2></blockquote>
+<p>在浏览器中的缓存分为需要发送HTTP请求的和无需发送的。</p>
+<p>在浏览器查找缓存时，会首先检查强缓存，这个阶段不需要发送HTTP请求。检查方式：通过相应的字段检查。在不同协议中如<code>HTTP/1.0</code>和<code>HTTP/1.1</code>中检查的字段是字段不同。</p>
+<ul>
+<li><code>HTTP/1.0</code>中检查Expires<ul>
+<li><p>Expires</p>
+<p>  <code>Expires</code>即过期时间，存在于服务端返回的响应头中，告诉浏览器可以在这个过期时间以前直接从缓存中获取数据，无需再次请求。<br>  报文中的expires长这样：<br>  <code>Expires: Wed, 22 Nov 2019 08:41:00 GMT</code><br>  表示资源在2019年11月22号8点41分过期，过期了就得向服务端发请求。</p>
+<p>  但这个方式存在的问题是：浏览器的服务器的时间可能不一致，从而可能导致服务器返回的过期时间是不准确的，所以有了下面的直接返回存在秒数法。由时刻变成时间。</p>
+</li>
+</ul>
+</li>
+<li><code>HTTP/1.1</code>中检查Cache-Control<ul>
+<li><p>Cache-Control</p>
+<p>  <code>Cache-Control</code> 即过期时长。对应的字段是max-age。比如：<code>Cache-Control:max-age=3600</code>代表这个响应返回后在3600秒，也就是一个小时之内可以直接使用缓存。</p>
+<p>  除了<code>max-age</code>字段还有非常多其他的</p>
+</li>
+</ul>
+</li>
+</ul>
+
 </div> 
 
 <script>
