@@ -177,11 +177,23 @@
 <h2 id="有哪些常用异步方式？"><a href="#有哪些常用异步方式？" class="headerlink" title="有哪些常用异步方式？"></a>有哪些常用异步方式？</h2></blockquote>
 <ul>
 <li><h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a><code>Promise</code></h3><ul>
-<li>Promise是异步编程的一种方式，比传统解决方案（回调函数和事件）更加合理强大，打比方说，Promise好比容器存放一些未来才会执行完毕（异步）的事件的结果，而这些结果一旦生成是无法改变的。</li>
-<li>Promise的三种状态：<ul>
+<li><p>Promise是异步编程的一种方式，比传统解决方案（回调函数和事件）更加合理强大，打比方说，Promise好比容器存放一些未来才会执行完毕（异步）的事件的结果，而这些结果一旦生成是无法改变的。</p>
+</li>
+<li><p>Promise的三种状态：</p>
+<ul>
 <li>Pending—Promise对象实例创建时候的初始状态。</li>
 <li>Fulfilled—可以理解为成功的状态。</li>
 <li>Rejected—可以理解为失败的状态。<br>  <img src="https://uploadfiles.nowcoder.com/images/20220301/4107856_1646121826353/AE8F5B0E5132A5E6C19BCE0A3065045C" alt="Promise状态关系"></li>
+</ul>
+</li>
+<li><p>以下为常见写法</p>
+</li>
+</ul>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">let p = new Promise((resolve,reject)=&gt; &#123;</span><br><span class="line">    reject(&#x27;reject&#x27;)</span><br><span class="line">    resolve(&#x27;success&#x27;) //无效代码不执行</span><br><span class="line">&#125;)</span><br><span class="line">p.then(</span><br><span class="line">    value =&gt; &#123;</span><br><span class="line">        console.log(value)</span><br><span class="line">    &#125;,</span><br><span class="line">    reason =&gt; &#123;</span><br><span class="line">        console.log(reason) //reject</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">//使用方法</span><br><span class="line">//1.通常放入一个函数体内</span><br><span class="line">//2.将promise对象作为返回值</span><br><span class="line">//3.promise对象包含的多为异步操作</span><br><span class="line">function fun()&#123; //success表示成功的回调,failed表示失败时的回调</span><br><span class="line">    let p = new Promise(function(success,failed)&#123;</span><br><span class="line">        if(条件)&#123;</span><br><span class="line">            success();</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            failed();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    return p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function success()&#123;</span><br><span class="line">    console.log(&quot;success&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function failed()&#123;</span><br><span class="line">    console.log(&quot;failed&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//promise对象.then(成功的方法,[失败的方法]);</span><br><span class="line">fun().then(success,failed);</span><br><span class="line">//promise对象可以将以前通过形参传递的回调函数,用then方法来进行传递.</span><br><span class="line"></span><br><span class="line">//我们的每一个异步事件，在执行的时候，都会有三种状态，执行中，成功，失败。这也就解释了为什么then方法为什么会有两个参数，参数1代表成功时执行的回调函数，参数2代表失败时的执行状态</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>then 方法<ul>
+<li>接收两个函数作为参数，第一个参数是 Promise 执行成功时的回调，第二个参数是 Promise 执行失败时的回调，两个函数只会有一个被调用</li>
 </ul>
 </li>
 </ul>
