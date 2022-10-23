@@ -150,18 +150,99 @@
  2.this指向父级作用域的执行上下文（技巧：js中除了全局作用域，其他都是由函数创造出来的，找到离箭头函数最近的function，与该function平级的执行上下文中的this即是箭头函数中的this）
  3.箭头函数无法使用apply、call、bind方法改变this指向，因为其this值在函数定义时已经确定
 </code></pre>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let obj = &#123;</span><br><span class="line">    //此处的this就是箭头函数中的this</span><br><span class="line">    getThis: function ()&#123;</span><br><span class="line">        return ()=&gt;&#123;</span><br><span class="line">            console.log(this);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.getThis()(); //obj</span><br></pre></td></tr></table></figure></li>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let obj = &#123;</span><br><span class="line">    //此处的this就是箭头函数中的this</span><br><span class="line">    getThis: function ()&#123;</span><br><span class="line">        return ()=&gt;&#123;</span><br><span class="line">            console.log(this);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.getThis()(); //obj</span><br></pre></td></tr></table></figure>
+
+
+<p> **回答箭头函数主要和普通函数的区别在于箭头函数的this永远不会改变。且没有原型prototype，且不能当构造函数</p>
+<p> ** 插个旗：箭头函数不能当作构造函数使用，因为其不能通过new关键字调用，报错的时候写的就是：error：test is not a constructor.不能new的原因是new内部实现分四步：新建一个空对象&#x3D;&gt;链接到原型&#x3D;&gt;绑定this&#x3D;&gt;返回新对象，箭头函数没有自己的this，它的this是继承了外层执行环境中的this，且this指向永远不会变，并且箭头函数没有__proto__属性指向，所以箭头函数也没办法当构造函数，否则调new会报错</p>
+<p> **详细箭头函数和普通函数的区别参考：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7069943937577779214">https://juejin.cn/post/7069943937577779214</a></p>
+<p> 【①：在使用this时，如果希望函数内外的this保持一致，就可以使用箭头函数；</p>
+</li>
 </ul>
+<p>②：当不希望函数内外的this指向一样的时候，就不能用箭头函数】</p>
 <blockquote>
 <h2 id="如何改变this的指向？"><a href="#如何改变this的指向？" class="headerlink" title="如何改变this的指向？"></a>如何改变this的指向？</h2></blockquote>
 <ul>
-<li><p>apply</p>
-<pre><code> apply()方法简单理解成调用一个函数的方式，且可以改变函数的this指向。
-</code></pre>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">写法：fun.apply(thisArg,[argsArray])</span><br><span class="line">thisArg:在fun函数运行时指定的this的值</span><br><span class="line">argsArray:传递的值，必须包含在数组里面</span><br><span class="line">返回值就是函数的返回值，apply就是调用函数</span><br><span class="line">const arr = [1,22,3,44,5,66,7,88,9];</span><br><span class="line">const max = Math.max.apply(Math,arr);</span><br><span class="line">console.log(max);</span><br></pre></td></tr></table></figure></li>
-<li><p>call</p>
+<li><h4 id="apply"><a href="#apply" class="headerlink" title="apply"></a>apply</h4><p> ①使用apply会立即调用函数；</p>
+<p> ②函数中this指向apply的第一个参数；</p>
+<p> ③apply接收两个实参，第二个参数是个数组，apply将第二个参数的数组按顺序拆散成多个实参传给函数。</p>
+<p> apply()方法简单理解成调用一个函数的方式，且可以改变函数的this指向。</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">写法：fun.apply(thisArg,[argsArray])</span><br><span class="line"></span><br><span class="line">thisArg:在fun函数运行时指定的this的值</span><br><span class="line">argsArray:传递的值，必须包含在数组里面</span><br><span class="line">返回值就是函数的返回值，apply就是调用函数</span><br><span class="line"></span><br><span class="line">const arr = [1,22,3,44,5,66,7,88,9];</span><br><span class="line">const max = Math.max.apply(Math,arr);</span><br><span class="line">console.log(max);</span><br></pre></td></tr></table></figure></li>
+<li><h4 id="call"><a href="#call" class="headerlink" title="call"></a>call</h4><p> ①使用call会立即调用函数；</p>
+<p> ②函数中this指向call的第一个参数；</p>
+<p> ③call接收两个以上实参，可以将第二个及以后的参数传给函数</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">apply：</span><br><span class="line">function fun(params1, params2) &#123;</span><br><span class="line">    console.log(this.name)</span><br><span class="line">    console.log(params1, params2)</span><br><span class="line">&#125;</span><br><span class="line">var lilei = &#123;name: &#x27;LiLei&#x27;&#125;</span><br><span class="line">var hanmei = &#123;name: &#x27;HanMei&#x27;&#125;</span><br><span class="line">fun.call(lilei, &#x27;lilei~&#x27;, &#x27;20&#x27;);    // LiLei lilei~ 20</span><br><span class="line">fun.apply(hanmei, [&#x27;hanmei~&#x27;, &#x27;18&#x27;]);   // HanMei hanmei~ 18</span><br></pre></td></tr></table></figure>
+
 </li>
-<li><p>bind</p>
+<li><h4 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h4><p>  ①创建一个跟原函数一样的新函数，但不执行；</p>
+<p>  ②永久的替换新函数中的this指向；</p>
+<p>  ③bind可以接收其他实参做永久替换部分形参变量为固定的实参值</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function fun(...arg) &#123;</span><br><span class="line">    console.log(this.name)</span><br><span class="line">    console.log(...arg)</span><br><span class="line">&#125;</span><br><span class="line">// bind返回的新函数可以多次调用</span><br><span class="line">var zhangsan = &#123;name: &#x27;ZhangSan&#x27;&#125;</span><br><span class="line">var zsfun = fun.bind(zhangsan)</span><br><span class="line">zsfun(1, 2, 3); // 输出结果：ZhangSan 1 2 3</span><br><span class="line">zsfun(&#x27;zs&#x27;);    // 输出结果：ZhangSan zs</span><br><span class="line">// bind绑定永久参数</span><br><span class="line">var zsfun2 = fun.bind(zhangsan, 100, 200)</span><br><span class="line">zsfun2(1, 2, 3);  // 输出结果：ZhangSan 100 200 1 2 3</span><br><span class="line">zsfun2(&#x27;zs&#x27;);   //输出结果：ZhangSan 100 200 zs</span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="改变this的指向小结："><a href="#改变this的指向小结：" class="headerlink" title="改变this的指向小结："></a>改变this的指向小结：</h4><p>  <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/34c3369729144386b276793b15645c7c~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="改变this的指向"><br>  被bind()永久绑定的this，即便用call，也无法修改this的指向了，即多次bind绑定也只有第一次的生效.<br> new操作的绑定操作优先度要高于bind，也会高于apply和call。</p>
+</li>
+</ul>
+<blockquote>
+<h2 id="如何判断this指向？"><a href="#如何判断this指向？" class="headerlink" title="如何判断this指向？"></a>如何判断this指向？</h2><pre><code>先念口诀：箭头函数、new、bind、apply 和 call、欧比届点（obj.）、直接调用、不在函数里。
+</code></pre>
+</blockquote>
+<p>按照口诀的顺序，只要满足前面某个场景，就可以确定 this 指向了。</p>
+<ul>
+<li><h4 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h4><p> 箭头函数排在第一个是因为它的 this 不会被改变，所以只要当前函数是箭头函数，那么就不用再看其他规则了。</p>
+<p> 箭头函数的 this 是在创建它时外层 this 的指向。这里的重点有两个：</p>
+<ul>
+<li><p>1.创建箭头函数时，就已经确定了它的 this 指向。</p>
+</li>
+<li><p>2.箭头函数内的 this 指向外层的 this。</p>
+</li>
+</ul>
+<p> 所以要知道箭头函数的 this 就得先知道外层 this 的指向，需要继续在外层应用七步口诀。</p>
+</li>
+<li><h4 id="new"><a href="#new" class="headerlink" title="new"></a>new</h4><p> 当使用 new 关键字调用函数时，函数中的 this 一定是 JS 创建的新对象。</p>
+</li>
+</ul>
+<p>读者可能会有疑问，“如果使用 new 关键调用箭头函数，是不是箭头函数的 this 就会被修改呢？”。<br>我们在控制台试一下。<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func = () =&gt; &#123;&#125;</span><br><span class="line">new func() // throw error</span><br></pre></td></tr></table></figure></p>
+<pre><code>从控制台中可以看出，箭头函数不能当做构造函数，所以不能与 new 一起执行。
+</code></pre>
+<ul>
+<li><h4 id="bind-1"><a href="#bind-1" class="headerlink" title="bind"></a>bind</h4><p>  bind 是指 Function.prototype.bind()。<br>  多次 bind 时只认第一次 bind 的值</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">易错点</span><br><span class="line">function func() &#123;</span><br><span class="line">console.log(this)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func.bind(1).bind(2)() // 1</span><br></pre></td></tr></table></figure>
+
+<p>  箭头函数中 this 不会被修改</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func = () =&gt; &#123;</span><br><span class="line">// 这里 this 指向取决于外层 this，参考口诀 7 「不在函数里」</span><br><span class="line">console.log(this)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func.bind(1)() // Window，口诀 1 优先</span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="bind-与-new"><a href="#bind-与-new" class="headerlink" title="bind 与 new"></a>bind 与 new</h4>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">易错点</span><br><span class="line">function func() &#123;</span><br><span class="line">console.log(this, this.__proto__ === func.prototype)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">boundFunc = func.bind(1)</span><br><span class="line">new boundFunc() // Object true，口诀 2 优先</span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="apply-和-call"><a href="#apply-和-call" class="headerlink" title="apply 和 call"></a>apply 和 call</h4><p>  apply() 和 call() 的第一个参数都是 this，区别在于通过 apply 调用时实参是放到数组中的，而通过 call 调用时实参是逗号分隔的。</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&gt;箭头函数中 this 不会被修改</span><br><span class="line">易错点:</span><br><span class="line"></span><br><span class="line">func = () =&gt; &#123;</span><br><span class="line">// 这里 this 指向取决于外层 this，参考口诀 7 「不在函数里」</span><br><span class="line">console.log(this)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func.apply(1) // Window，口诀 1 优先</span><br><span class="line"></span><br><span class="line">&gt;bind 函数中 this 不会被修改</span><br><span class="line">易错点:</span><br><span class="line">function func() &#123;</span><br><span class="line">console.log(this)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">boundFunc = func.bind(1)</span><br><span class="line">boundFunc.apply(2) // 1，口诀 3 优先</span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="欧比届点（obj-）"><a href="#欧比届点（obj-）" class="headerlink" title="欧比届点（obj.）"></a>欧比届点（obj.）</h4>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function func() &#123;</span><br><span class="line">console.log(this.x)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj = &#123; x: 1 &#125;</span><br><span class="line">obj.func = func</span><br><span class="line">obj.func() // 1</span><br></pre></td></tr></table></figure>
+
+<p>  这里就不用代码例证箭头函数和 bind 函数的优先级更高了，有兴趣可自行尝试吧。</p>
+</li>
+<li><h4 id="直接调用"><a href="#直接调用" class="headerlink" title="直接调用"></a>直接调用</h4><p>  在函数不满足前面的场景，被直接调用时，this 将指向全局对象。在浏览器环境中全局对象是 Window，在 Node.js 环境中是 Global。</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">先来个简单的例子。</span><br><span class="line">function func() &#123;</span><br><span class="line">console.log(this)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func() // Window</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">来一个复杂的例子，外层的 outerFunc 就起个迷惑目的。</span><br><span class="line">function outerFunc() &#123;</span><br><span class="line">console.log(this) // &#123; x: 1 &#125;</span><br><span class="line"></span><br><span class="line">function func() &#123;</span><br><span class="line">    console.log(this) // Window</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">outerFunc.bind(&#123; x: 1 &#125;)()</span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="不在函数里"><a href="#不在函数里" class="headerlink" title="不在函数里"></a>不在函数里</h4><p>  不在函数中的场景，可分为浏览器的<code>&lt;script /&gt;</code>标签里，或 Node.js 的模块文件里。</p>
+<p>  在<code>&lt;script /&gt;</code>标签里，this 指向 Window。<br>  在 Node.js 的模块文件里，this 指向 Module 的默认导出对象，也就是 module.exports。</p>
+<ul>
+<li><p>非严格模式<br>  严格模式是在 ES5 提出的。在 ES5 规范之前，也就是非严格模式下，this 不能是 undefined 或 null。所以<strong>在非严格模式下，通过上面七步口诀，如果得出 this 指向是 undefined 或 null，那么 this 会指向全局对象。</strong>在浏览器环境中全局对象是 Window，在 Node.js 环境中是 Global。</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">例如下面的代码，在非严格模式下，this 都指向全局对象。</span><br><span class="line">function a() &#123;</span><br><span class="line">console.log(&quot;function a:&quot;, this)</span><br><span class="line">;(() =&gt; &#123;</span><br><span class="line">    console.log(&quot;arrow function: &quot;, this)</span><br><span class="line">&#125;)()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a()</span><br><span class="line"></span><br><span class="line">a.bind(null)()</span><br><span class="line"></span><br><span class="line">a.bind(undefined)()</span><br><span class="line"></span><br><span class="line">a.bind().bind(2)()</span><br><span class="line"></span><br><span class="line">a.apply()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>非严格模式下执行结果为：<br> <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d2ee9bb0210d4e34b93a21ec186b07d5~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="非严格模式下执行结果"></li>
+</ul>
+</li>
+<li><p>在严格模式下，执行同样的代码进行对比。记住要一次性将所有代码复制粘贴到控制台中，才能运行在严格模式下（因为第一行 “use strict” 才会对后面的代码生效）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&quot;use strict&quot;</span><br><span class="line"></span><br><span class="line">function a() &#123;</span><br><span class="line">console.log(&quot;function a:&quot;, this)</span><br><span class="line">;(() =&gt; &#123;</span><br><span class="line">    console.log(&quot;arrow function: &quot;, this)</span><br><span class="line">&#125;)()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a()</span><br><span class="line"></span><br><span class="line">a.bind(null)()</span><br><span class="line"></span><br><span class="line">a.bind(undefined)()</span><br><span class="line"></span><br><span class="line">a.bind().bind(2)()</span><br><span class="line"></span><br><span class="line">a.apply()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>严格模式下执行结果为：<br>  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6de63113390a4514b76451407f3463bb~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="严格模式下执行结果"></li>
+</ul>
+<p>七步口诀在严格模式下和非严格模式下都是完备的，只是在非严格模式下 null 或 undefined 会被转换为全局对象。所以我没有将这点列入口诀中。</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6946021671656488991">https://juejin.cn/post/6946021671656488991</a></p>
+</li>
+</ul>
 </li>
 </ul>
 
