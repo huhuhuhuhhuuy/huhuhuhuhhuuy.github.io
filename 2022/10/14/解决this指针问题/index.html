@@ -199,12 +199,11 @@
 <p> 所以要知道箭头函数的 this 就得先知道外层 this 的指向，需要继续在外层应用七步口诀。</p>
 </li>
 <li><h4 id="new"><a href="#new" class="headerlink" title="new"></a>new</h4><p> 当使用 new 关键字调用函数时，函数中的 this 一定是 JS 创建的新对象。</p>
-</li>
-</ul>
-<p>读者可能会有疑问，“如果使用 new 关键调用箭头函数，是不是箭头函数的 this 就会被修改呢？”。<br>我们在控制台试一下。<br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func = () =&gt; &#123;&#125;</span><br><span class="line">new func() // throw error</span><br></pre></td></tr></table></figure></p>
-<pre><code>从控制台中可以看出，箭头函数不能当做构造函数，所以不能与 new 一起执行。
+<p> “如果使用 new 关键调用箭头函数，是不是箭头函数的 this 就会被修改呢？”。</p>
+<pre><code> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func = () =&gt; &#123;&#125;</span><br><span class="line">new func() // throw error</span><br></pre></td></tr></table></figure>
 </code></pre>
-<ul>
+<p> 从控制台中可以看出，箭头函数不能当做构造函数，所以不能与 new 一起执行。</p>
+</li>
 <li><h4 id="bind-1"><a href="#bind-1" class="headerlink" title="bind"></a>bind</h4><p>  bind 是指 Function.prototype.bind()。<br>  多次 bind 时只认第一次 bind 的值</p>
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">易错点</span><br><span class="line">function func() &#123;</span><br><span class="line">console.log(this)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func.bind(1).bind(2)() // 1</span><br></pre></td></tr></table></figure>
 
