@@ -146,20 +146,18 @@
 </code></pre>
 </li>
 <li><p>箭头函数中的this</p>
-<pre><code> 1.箭头函数中的this是在定义的时候就确定下来的，不是在调用的时候才确定。
- 2.this指向父级作用域的执行上下文（技巧：js中除了全局作用域，其他都是由函数创造出来的，找到离箭头函数最近的function，与该function平级的执行上下文中的this即是箭头函数中的this）
- 3.箭头函数无法使用apply、call、bind方法改变this指向，因为其this值在函数定义时已经确定
-</code></pre>
+<p>  1.箭头函数中的this是在定义的时候就确定下来的，不是在调用的时候才确定。</p>
+<p> 2.this指向父级作用域的执行上下文（技巧：js中除了全局作用域，其他都是由函数创造出来的，找到离箭头函数最近的function，与该function平级的执行上下文中的this即是箭头函数中的this）</p>
+<p> 3.箭头函数无法使用apply、call、bind方法改变this指向，因为其this值在函数定义时已经确定</p>
  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let obj = &#123;</span><br><span class="line">    //此处的this就是箭头函数中的this</span><br><span class="line">    getThis: function ()&#123;</span><br><span class="line">        return ()=&gt;&#123;</span><br><span class="line">            console.log(this);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.getThis()(); //obj</span><br></pre></td></tr></table></figure>
 
 
 <p> **回答箭头函数主要和普通函数的区别在于箭头函数的this永远不会改变。且没有原型prototype，且不能当构造函数</p>
 <p> ** 插个旗：箭头函数不能当作构造函数使用，因为其不能通过new关键字调用，报错的时候写的就是：error：test is not a constructor.不能new的原因是new内部实现分四步：新建一个空对象&#x3D;&gt;链接到原型&#x3D;&gt;绑定this&#x3D;&gt;返回新对象，箭头函数没有自己的this，它的this是继承了外层执行环境中的this，且this指向永远不会变，并且箭头函数没有__proto__属性指向，所以箭头函数也没办法当构造函数，否则调new会报错</p>
 <p> **详细箭头函数和普通函数的区别参考：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7069943937577779214">https://juejin.cn/post/7069943937577779214</a></p>
-<p> 【①：在使用this时，如果希望函数内外的this保持一致，就可以使用箭头函数；</p>
+<p> 【①：在使用this时，如果希望函数内外的this保持一致，就可以使用箭头函数；<br> ②：当不希望函数内外的this指向一样的时候，就不能用箭头函数】</p>
 </li>
 </ul>
-<p>②：当不希望函数内外的this指向一样的时候，就不能用箭头函数】</p>
 <blockquote>
 <h2 id="如何改变this的指向？"><a href="#如何改变this的指向？" class="headerlink" title="如何改变this的指向？"></a>如何改变this的指向？</h2></blockquote>
 <ul>
