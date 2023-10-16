@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="YDS Jimmy">
+
+
+
+
+
+
+
+<title>【算法】排序 | Jimmyj&#39;s Space!</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+</style>
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/frame.js"></script>
+    
+
+
+
+
+
+
+
+
+
+
+  <meta name="generator" content="Hexo 6.2.0"></head>
+  <body>
+    <div class="mask-border">
+    </div>
+
+    <div class="wrapper">
+
+      <div class="header">
+  <div class="flex-container">
+    <div class="header-inner">
+      <div class="site-brand-container">
+        <a href="/">
+          
+            JimmyDaily.几米小站
+          
+        </a>
+      </div>
+      <div id="menu-btn" class="menu-btn" onclick="toggleMenu()">
+        Menu
+      </div>
+      <nav class="site-nav">
+        <ul class="menu-list">
+          
+            
+              <li class="menu-item">
+                <a href="/">Home</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/archives/">Archive</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/categories/gallery/">Gallery</a>
+              </li> 
+                   
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main">
+        <div class="flex-container">
+          <article id="post">
+
+  
+    <div class="post-head">
+    <div class="post-info">
+        <div class="tag-list">
+            
+                
+                    <span class="post-tag">
+                        <a href="/tags/%E7%AE%97%E6%B3%95/">
+                            算法
+                        </a>
+                    </span>    
+                           
+            
+        </div>
+        <div class="post-title">
+            
+            
+                【算法】排序
+            
+            
+        </div>
+        <span class="post-date">
+            Oct 16, 2023
+        </span>
+    </div>
+    <div class="post-img">
+        
+            <div class="h-line-primary"></div>
+              
+    </div>
+</div>
+    <div class="post-content">
+    <ul>
+<li><p>关于冒泡排序</p>
+</li>
+<li><p>12345678</p>
+</li>
+<li><p>63782145</p>
+</li>
+<li><ol>
+<li>36712458</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>36124578</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>31245678</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>12345678<br>原则就是，在每次换位置的时候，将大的换到右边，直到卡住，所以每次起码能解决将当前最大的排到正确的位置上<br>也就是说交换复杂度最多为O^ 2<br>1）两层循环必不可少<br>考虑提前结束冒泡，已排好的情况，当一次冒泡中不再需要交换两元素位置时，说明排序结束<br>2）设置标志位判断循环是否已经结束<br>3）记住最后一次交换的位置，后面的直接不用走判断流程了，都是已经排好了的</li>
+</ol>
+<blockquote>
+<p>交换函数的技巧：</p>
+</blockquote>
+<ul>
+<li>普通的交换函数<br>   ‘<br>   swap(a,b){<br>  let temp &#x3D; a;<br>  a &#x3D; b;<br>  b &#x3D; temp;<br>   }<br>   ’ </li>
+<li>不引入新变量进行<br>   ‘<br>   swap1(a,b){<br>  a &#x3D; a + b;<br>  b &#x3D; a - b;<br>  a &#x3D; a - b;<br>   }<br>   ’<br>   可能存在的问题是数字越界<br>   ‘<br>   a &#x3D; a ^ b<br>   b &#x3D; a ^ b<br>   a &#x3D; a ^ b<br>   ’<br>   上述异或方式不会造成数字越界？</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>283.移动零</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ul>
+<li>关于选择排序</li>
+</ul>
+
+</div> 
+
+<script>
+    window.onload = detectors();
+</script>
+    <div class="post-footer">
+    <div class="h-line-primary"></div>
+    <nav class="post-nav">
+        <div class="prev-item">
+           
+        </div>
+        <div class="next-item">
+            
+                <div class="icon arrow-right"></div>
+                <div class="post-link">
+                  <a href="/2022/10/14/%E8%A7%A3%E5%86%B3this%E6%8C%87%E9%92%88%E9%97%AE%E9%A2%98/">Next</a>  
+                </div>  
+            
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="post-comment">
+
+     
+
+     
+    
+    
+
+</div>
+     
+  
+</article>
+        </div>
+      </div>
+      
+      <div class="footer">
+    <div class="flex-container">
+        <div class="footer-text">
+            
+            
+            
+                Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/zoeingwingkei/frame/">Frame</a>
+                
+        </div>
+    </div>
+</div>
+
+    </div>
+
+  </body>
+</html>
