@@ -135,43 +135,27 @@
 </div>
     <div class="post-content">
     <ul>
-<li><p>关于冒泡排序</p>
-</li>
-<li><p>12345678</p>
-</li>
-<li><p>63782145</p>
-</li>
-<li><ol>
+<li><p>关于冒泡排序<br>12345678<br>63782145</p>
+<ol>
 <li>36712458</li>
-</ol>
-</li>
-<li><ol start="2">
 <li>36124578</li>
-</ol>
-</li>
-<li><ol start="3">
 <li>31245678</li>
-</ol>
-</li>
-<li><ol start="4">
 <li>12345678<br>原则就是，在每次换位置的时候，将大的换到右边，直到卡住，所以每次起码能解决将当前最大的排到正确的位置上<br>也就是说交换复杂度最多为O^ 2<br>1）两层循环必不可少<br>考虑提前结束冒泡，已排好的情况，当一次冒泡中不再需要交换两元素位置时，说明排序结束<br>2）设置标志位判断循环是否已经结束<br>3）记住最后一次交换的位置，后面的直接不用走判断流程了，都是已经排好了的</li>
 </ol>
 <blockquote>
 <p>交换函数的技巧：</p>
 </blockquote>
 <ul>
-<li>普通的交换函数<br>   ‘<br>   swap(a,b){<br>  let temp &#x3D; a;<br>  a &#x3D; b;<br>  b &#x3D; temp;<br>   }<br>   ’ </li>
-<li>不引入新变量进行<br>   ‘<br>   swap1(a,b){<br>  a &#x3D; a + b;<br>  b &#x3D; a - b;<br>  a &#x3D; a - b;<br>   }<br>   ’<br>   可能存在的问题是数字越界<br>   ‘<br>   a &#x3D; a ^ b<br>   b &#x3D; a ^ b<br>   a &#x3D; a ^ b<br>   ’<br>   上述异或方式不会造成数字越界？</li>
+<li>普通的交换函数   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">swap(a,b)&#123;</span><br><span class="line">   let temp = a;</span><br><span class="line">   a = b;</span><br><span class="line">   b = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>不引入新变量进行   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">swap1(a,b)&#123;</span><br><span class="line">   a = a + b;</span><br><span class="line">   b = a - b;</span><br><span class="line">   a = a - b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+   可能存在的问题是数字越界   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = a ^ b</span><br><span class="line">b = a ^ b</span><br><span class="line">a = a ^ b</span><br></pre></td></tr></table></figure>
+   上述异或方式不会造成数字越界？</li>
 </ul>
 </li>
 </ul>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>283.移动零</p>
-</blockquote>
-</blockquote>
-</blockquote>
+<ul>
+<li>283.移动零</li>
+</ul>
 <ul>
 <li>关于选择排序</li>
 </ul>
